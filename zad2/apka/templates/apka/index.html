@@ -1,0 +1,9 @@
+{%  if gminas %}
+    <ul>
+        {% for gmina in gminas %}
+            <li><a href="/apka/{{ gmina.numer }}"> {{ gmina.nazwa }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p> no gminas available. </p>
+{% endif %}

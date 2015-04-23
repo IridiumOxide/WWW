@@ -1,0 +1,39 @@
+<h1> {{ gmina.nazwa }}</h1>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<table style="border: 1px solid black">
+    <thead>
+        <tr>
+            <th>Nr obwodu</th>
+            <th>Adres</th>
+            <th>Otrzymanych kart do głosowania</th>
+            <th>Wyborców uprawnionych do głosowania</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for obwod in obwody %}
+            <tr>
+                <form action="{% url 'obwod' obwod.id %}" method="POST">
+                    {% csrf_token %}
+                    <td>{{ obwod.numer }}</td>
+                    <td>{{ obwod.adres }}</td>
+
+                    <input type="hidden" name="ok_stare" value="{{ obwod.otrzymanych_kart }}">
+                    <td><input type="text" name="ok" value="{{ obwod.otrzymanych_kart }}"></td>
+
+                    <input type="hidden" name="upr_stare" value="{{ obwod.uprawnionych }}">
+                    <td><input type="text" name="upr" value="{{ obwod.uprawnionych }}"></td>
+
+                    <td><input type="submit" value="Wyślij"></td>
+                </form>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
