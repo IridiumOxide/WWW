@@ -53,5 +53,6 @@ def obwod(request, obwod_numer):
     except KeyError:
         messages.error(request, "Niekompletne dane")
     except Obwod.DoesNotExist:
+        messages.error(request, "Obwod not found")
 
     return HttpResponseRedirect(reverse('gmina_menu', args=(obwod.gmina.numer,)))
