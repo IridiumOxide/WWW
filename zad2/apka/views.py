@@ -24,9 +24,11 @@ def gmina_menu(request, gmina_numer):
 @transaction.atomic
 def obwod(request, obwod_numer):
     oid = int(obwod_numer)
-    obwod = get_object_or_404(Obwod, id=oid)
+
+    obwod = None
 
     try:
+        obwod = Obwod.objects.select_for_update().get(id=oid)
         ok_stare = int(request.POST['ok_stare'])
         ok = int(request.POST['ok'])
         upr_stare = int(request.POST['upr_stare'])
@@ -50,5 +52,6 @@ def obwod(request, obwod_numer):
         messages.error(request, "Błędne dane")
     except KeyError:
         messages.error(request, "Niekompletne dane")
+    except Obwod.DoesNotExist:
 
     return HttpResponseRedirect(reverse('gmina_menu', args=(obwod.gmina.numer,)))
