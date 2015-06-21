@@ -8,9 +8,15 @@
 </ul>
 {% endif %}
 
+{% load staticfiles %}
+<script type="text/javascript" src="{% static "jquery-2.1.4.min.js" %}"></script>
+<script type="text/javascript" src="{% static "cookie_plugin/jquery.cookie.js" %}"></script>
+<script type="text/javascript" src="{% static "scripts.js" %}"></script>
+
 <table style="border: 1px solid black">
     <thead>
         <tr>
+            <th></th>
             <th>Nr obwodu</th>
             <th>Adres</th>
             <th>Otrzymanych kart do głosowania</th>
@@ -19,21 +25,20 @@
     </thead>
     <tbody>
         {% for obwod in obwody %}
-            <tr>
-                <form action="{% url 'obwod' obwod.id %}" method="POST">
-                    {% csrf_token %}
+                <tr>
+                    <td><form id="form{{ obwod.id }}" action="{% url 'obwod' obwod.id %}" method="POST"></form></td>
                     <td>{{ obwod.numer }}</td>
                     <td>{{ obwod.adres }}</td>
-
-                    <input type="hidden" name="ok_stare" value="{{ obwod.otrzymanych_kart }}">
-                    <td><input type="text" name="ok" value="{{ obwod.otrzymanych_kart }}"></td>
-
-                    <input type="hidden" name="upr_stare" value="{{ obwod.uprawnionych }}">
-                    <td><input type="text" name="upr" value="{{ obwod.uprawnionych }}"></td>
-
-                    <td><input type="submit" value="Wyślij"></td>
-                </form>
-            </tr>
+                    <td id="ok{{ obwod.id }}">{{ obwod.otrzymanych_kart }}</td>
+                    <td id="upr{{ obwod.id }}">{{ obwod.uprawnionych }}</td>
+                    <td>
+                        <button id="editButton{{ obwod.id }}"> Edytuj </button>
+                        <button id="submitButton{{ obwod.id }}"> Zapisz </button>
+                        <button id="cancelButton{{ obwod.id }}"> Anuluj </button></td>
+                    <script type="text/javascript">
+                        zmiana({{ obwod.id }});
+                    </script>
+                </tr>
         {% endfor %}
     </tbody>
 </table>
