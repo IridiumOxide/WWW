@@ -61,6 +61,9 @@ function submitForm(id){
                 getDataCancel(id);
                 alert("Dane zmieniły się od ostatniego zapisu. Zapisujesz " + json.new + ", a ktoś inny zapisał " + json.original);
             }
+            $("#editButton" + id).show();
+            $("#submitButton" + id).hide();
+            $("#cancelButton" + id).hide();
         },
         error: function(xhr, errmsg){
             console.log("error");
@@ -80,6 +83,14 @@ function getDataEdit(id){
             console.log("Got data: " + json.ok + " , " + json.upr);
             $("#ok" + id).replaceWith('<td id="ok' + id + '"><input type="hidden" name="ok_stare" value="' + json.ok + '" form="form' + id + '"><input type="text" name="ok" value="' + json.ok + '" form="form' + id + '"></td>');
             $("#upr" + id).replaceWith('<td id="upr' + id + '"><input type="hidden" name="upr_stare" value="' + json.upr + '" form="form' + id + '"><input type="text" name="upr" value="' + json.upr + '" form="form' + id + '"></td>');
+            $("#editButton" + id).hide();
+            $("#submitButton" + id).show();
+            $("#cancelButton" + id).show();
+        },
+        error: function(xhr, errmsg){
+            console.log("error");
+            console.log(xhr.status + ": " + xhr.responseText + "\n" + errmsg);
+            alert("An error has happened to happen.")
         }
     })
 }
@@ -93,7 +104,16 @@ function getDataCancel(id){
         success: function(json){
             console.log("Got data: " + json.ok + " , " + json.upr);
             $("#ok" + id).html(json.ok);
-            $("#upr" + id).html(json.upr);}
+            $("#upr" + id).html(json.upr);
+            $("#editButton" + id).show();
+            $("#submitButton" + id).hide();
+            $("#cancelButton" + id).hide();
+        },
+        error: function(xhr, errmsg){
+            console.log("error");
+            console.log(xhr.status + ": " + xhr.responseText + "\n" + errmsg);
+            alert("An error has happened to happen.")
+        }
     })
 }
 
@@ -112,25 +132,16 @@ function zmiana(id) {
     $(document).ready(ediB.click(function () {
         console.log("klik " + id);
         getDataEdit(id);
-        ediB.hide();
-        subB.show();
-        canB.show();
         return false;
     }));
     $(document).ready(subB.click(function () {
         console.log("klik zapisz");
         $("#form" + id).submit();
-        ediB.show();
-        subB.hide();
-        canB.hide();
         return false;
     }));
     $(document).ready(canB.click(function () {
         console.log("klik anuluj");
         getDataCancel(id);
-        ediB.show();
-        subB.hide();
-        canB.hide();
         return false;
     }));
 }

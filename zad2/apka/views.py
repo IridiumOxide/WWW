@@ -1,10 +1,8 @@
 # Encoding: utf-8
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from django.contrib import messages
 from django.db import transaction
 import json
-from django.core.urlresolvers import reverse
 from models import Gmina, Obwod
 
 
