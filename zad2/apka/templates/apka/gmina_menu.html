@@ -26,7 +26,9 @@
     <tbody>
         {% for obwod in obwody %}
                 <tr>
-                    <td><form id="form{{ obwod.id }}" action="{% url 'obwod' obwod.id %}" method="POST"></form></td>
+                    <td><form id="form{{ obwod.id }}" action="{% url 'obwod' obwod.id %}" method="POST">
+                        {% csrf_token %}
+                    </form></td>
                     <td>{{ obwod.numer }}</td>
                     <td>{{ obwod.adres }}</td>
                     <td id="ok{{ obwod.id }}">{{ obwod.otrzymanych_kart }}</td>
@@ -36,7 +38,7 @@
                         <button id="submitButton{{ obwod.id }}"> Zapisz </button>
                         <button id="cancelButton{{ obwod.id }}"> Anuluj </button></td>
                     <script type="text/javascript">
-                        zmiana({{ obwod.id }});
+                        $(document).ready(zmiana({{ obwod.id }}));
                     </script>
                 </tr>
         {% endfor %}
